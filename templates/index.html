@@ -35,7 +35,10 @@
                         <h1>Subreddits </h1>
                         <ul> 
                           {% for sub in subreddits %}
-                          <li> {{ sub.display_name }} - {{ sub.subscribers }} </li>
+                          <li> 
+                            <h2> <a href="//reddit.com/r/{{ sub.display_name}}" target="_blank"> {{ sub.display_name }} ({{ sub.subscribers }}) </a> </h2>
+                            <p> {{ sub.public_description }} </p>
+                          </li>
                           {% endfor %}
                         </ul>
                     </header>
