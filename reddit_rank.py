@@ -15,21 +15,31 @@ reddit = praw.Reddit(
     username=environ["REDDIT_USERNAME"])
 
 
+def count_in_day(posts): 
+    one_day = 60 * 60 * 24
+    day_count = 0 
+    oldest_post = 0
+    now = int(time.time())
+    for post in posts:
+        post_age = int((now - post.created_utc) / one_day)
+        if oldest_post == post_age:
+            day_count += 1
+        elif day_count > 0 or post_age > 6:
+            break
+        else:
+            oldest_post = post_age
+            day_count += 1
+
+    return (day_count, oldest_post)
+    
 @app.route('/')
 def hello_world():
     sublist = ""
     subs = sorted(reddit.user.subreddits(), 
             key=lambda x: x.subscribers, reverse=True)
-    now = int(time.time())
-    one_day = 60 * 60 * 24
     subreddits = []
     for sub in subs:
-        day_count = 0
-        for post in sub.new():
-            post_age = now - post.created_utc 
-            if post_age > one_day: 
-                break
-            day_count += 1
+        (day_count, oldest_post) = count_in_day(sub.new())
         
         subreddits.append({
             "display_name": sub.display_name,
@@ -37,5 +47,6 @@ def hello_world():
             "public_description": sub.public_description,
             "over18": sub.over18,
             "activity_count":day_count,
+            "oldest_post":oldest_post,
         })
     return render_template('index.html', subreddits=subreddits)

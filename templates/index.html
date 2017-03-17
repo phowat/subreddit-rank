@@ -37,7 +37,7 @@
                           {% for sub in subreddits %}
                           <li class="{% if sub.over18 %} over_18 {% endif %}"> 
                             <h2> <a href="//reddit.com/r/{{ sub.display_name}}" target="_blank"> {{ sub.display_name }} ({{ sub.subscribers }}) </a> </h2>
-                            <h1> {{ sub.activity_count }} </h1>
+                            <h1> {{ sub.activity_count }} - {{ sub.oldest_post }} </h1>
                             <p> {{ sub.public_description }} </p>
                           </li>
                           {% endfor %}
