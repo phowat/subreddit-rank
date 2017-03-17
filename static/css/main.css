@@ -371,3 +371,7 @@ nav a:hover {
         page-break-after: avoid;
     }
 }
+
+.over_18 {
+  background-color: #efb1b1;
+}
